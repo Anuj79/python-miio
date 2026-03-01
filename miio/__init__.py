@@ -62,6 +62,7 @@ from miio.integrations.lumi.acpartner import (
 from miio.integrations.lumi.camera.aqaracamera import AqaraCamera
 from miio.integrations.lumi.curtain import CurtainMiot
 from miio.integrations.lumi.gateway import Gateway
+from miio.integrations.mijia.camera import MijiaCameraV1
 from miio.integrations.mijia.vacuum import G1Vacuum
 from miio.integrations.mmgg.petwaterdispenser import PetWaterDispenser
 from miio.integrations.nwt.dehumidifier import AirDehumidifier
