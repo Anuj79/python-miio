@@ -101,6 +101,53 @@ camera.format_sd_card()
 camera.eject_sd_card()
 ```
 
+### Video Streaming
+
+The camera supports multiple streaming protocols:
+
+#### P2P Stream (Peer-to-Peer)
+
+```python
+# Start P2P stream (direct connection without cloud)
+camera.start_p2p_stream()
+
+# Stop P2P stream
+camera.stop_p2p_stream()
+```
+
+#### RTSP Stream (for Amazon Alexa)
+
+```python
+# Start RTSP stream with default quality
+result = camera.start_rtsp_stream()
+# Returns: stream address, snapshot URL, and expiration time
+
+# Start with specific video quality (0 = default)
+result = camera.start_rtsp_stream(video_attribute=0)
+
+# Stop RTSP stream
+camera.stop_alexa_stream()
+
+# Get current stream configuration
+config = camera.get_stream_configuration()
+```
+
+#### HLS Stream (for Google Home)
+
+```python
+# Start HLS stream
+result = camera.start_hls_stream()
+# Returns: stream address
+
+# Start with specific video quality
+result = camera.start_hls_stream(video_attribute=0)
+
+# Stop HLS stream
+camera.stop_google_stream()
+```
+
+**Note**: Actual video playback requires additional client software that supports the respective protocols (P2P client, RTSP player, or HLS player).
+
 ## Status Properties
 
 The `status()` method returns a `CameraStatus` object with the following properties:
@@ -156,5 +203,6 @@ https://github.com/rytilahti/python-miio
 ## Notes
 
 - This camera uses the MIoT protocol (not the older miIO protocol)
-- Not all camera features are exposed via the API (e.g., live streaming requires P2P connection)
-- Some advanced features like Alexa/Google Home integration require additional setup
+- P2P streaming is supported but requires a P2P client to view the stream
+- RTSP and HLS streaming are available for integration with Alexa and Google Home
+- Stream URLs returned by the API typically include authentication tokens with expiration times

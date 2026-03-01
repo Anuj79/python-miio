@@ -56,8 +56,26 @@ try:
     # camera.format_sd_card()  # Format SD card (WARNING: Deletes all data!)
     # camera.eject_sd_card()   # Safely eject SD card
 
+    # Video streaming
+    # camera.start_p2p_stream()  # Start P2P stream
+    # camera.stop_p2p_stream()   # Stop P2P stream
+
+    # RTSP stream (for Alexa)
+    # result = camera.start_rtsp_stream()
+    # print(result)  # Contains stream URL, snapshot URL, expiration
+    # camera.stop_alexa_stream()
+
+    # HLS stream (for Google Home)
+    # result = camera.start_hls_stream()
+    # print(result)  # Contains stream URL
+    # camera.stop_google_stream()
+
     print("\n✅ Connection successful!")
     print("\nUncomment the commands in the script to control your camera.")
+    print("\nStreaming methods available:")
+    print("  - start_p2p_stream() / stop_p2p_stream()")
+    print("  - start_rtsp_stream() / stop_alexa_stream()")
+    print("  - start_hls_stream() / stop_google_stream()")
 
 except Exception as e:
     print(f"\n❌ Error: {e}")

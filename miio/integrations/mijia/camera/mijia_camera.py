@@ -21,6 +21,16 @@ MIOT_MAPPING = {
         "night_shot": {"siid": 2, "piid": 3},
         "time_watermark": {"siid": 2, "piid": 5},
         "wdr_mode": {"siid": 2, "piid": 6},
+        # P2P Stream Service (siid=5)
+        "start_p2p_stream": {"siid": 5, "aiid": 1},
+        "stop_p2p_stream": {"siid": 5, "aiid": 2},
+        # Camera Stream for Alexa (siid=3)
+        "start_rtsp_stream": {"siid": 3, "aiid": 1},
+        "stop_alexa_stream": {"siid": 3, "aiid": 2},
+        "get_stream_config": {"siid": 3, "aiid": 3},
+        # Camera Stream for Google Home (siid=4)
+        "start_hls_stream": {"siid": 4, "aiid": 1},
+        "stop_google_stream": {"siid": 4, "aiid": 2},
         # Memory Card Management Service (siid=6)
         "format_sd": {"siid": 6, "aiid": 1},
         "eject_sd": {"siid": 6, "aiid": 2},
@@ -175,3 +185,63 @@ class MijiaCameraV1(MiotDevice):
     def eject_sd_card(self):
         """Eject the SD card."""
         return self.call_action_from_mapping("eject_sd")
+
+    @command(default_output=format_output("Starting P2P stream"))
+    def start_p2p_stream(self):
+        """Start P2P (peer-to-peer) stream.
+
+        This starts the camera's P2P streaming capability which allows
+        direct connection to the camera without going through cloud servers.
+        """
+        return self.call_action_from_mapping("start_p2p_stream")
+
+    @command(default_output=format_output("Stopping P2P stream"))
+    def stop_p2p_stream(self):
+        """Stop P2P stream."""
+        return self.call_action_from_mapping("stop_p2p_stream")
+
+    @command(
+        click.argument("video_attribute", type=int, default=0),
+        default_output=format_output("Starting RTSP stream"),
+    )
+    def start_rtsp_stream(self, video_attribute: int = 0):
+        """Start RTSP stream for Amazon Alexa.
+
+        Returns stream address, snapshot URL, and expiration time.
+
+        Args:
+            video_attribute: Video quality attribute (default: 0)
+        """
+        return self.call_action_by(3, 1, [video_attribute])
+
+    @command(default_output=format_output("Stopping Alexa stream"))
+    def stop_alexa_stream(self):
+        """Stop RTSP stream for Alexa."""
+        return self.call_action_from_mapping("stop_alexa_stream")
+
+    @command(default_output=format_output("Getting stream configuration"))
+    def get_stream_configuration(self):
+        """Get current stream configuration.
+
+        Returns stream status and video attribute settings.
+        """
+        return self.call_action_from_mapping("get_stream_config")
+
+    @command(
+        click.argument("video_attribute", type=int, default=0),
+        default_output=format_output("Starting HLS stream"),
+    )
+    def start_hls_stream(self, video_attribute: int = 0):
+        """Start HLS stream for Google Home.
+
+        Returns stream address for HLS playback.
+
+        Args:
+            video_attribute: Video quality attribute (default: 0)
+        """
+        return self.call_action_by(4, 1, [video_attribute])
+
+    @command(default_output=format_output("Stopping Google stream"))
+    def stop_google_stream(self):
+        """Stop HLS stream for Google Home."""
+        return self.call_action_from_mapping("stop_google_stream")
